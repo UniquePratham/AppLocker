@@ -1,0 +1,10 @@
+"""AppLocker version and application metadata."""
+
+APP_NAME = "AppLocker"
+APP_DISPLAY_NAME = "AppLocker — Modern Windows Application Access Control"
+APP_VERSION = "2.0.0"
+APP_TAGLINE = "Windows application access control"
+APP_URL = "https://github.com/UniquePratham/AppLocker"
+APP_LICENSE = "MIT"
+APP_AUTHOR = "Pratham (fork) / Hachiki (upstream)"
+APP_COPYRIGHT = "Copyright (c) 2025 Hachiki; modernized by Pratham"

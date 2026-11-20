@@ -1,0 +1,1 @@
+"""AppLocker test suite."""

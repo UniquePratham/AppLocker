@@ -11,6 +11,18 @@ Makefile*
 *.stash
 *.qmake
 
+# Python / PyInstaller build artifacts
+__pycache__/
+*.py[cod]
+build/
+dist/
+release/
+.venv/
+venv/
+
+# Local runtime data
+Data/
+
 # Ignore moc files
 *.moc
 moc_predefs.h
