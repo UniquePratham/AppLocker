@@ -30,3 +30,8 @@ moc_predefs.h
 # Ignore data and text files
 *.dat
 *.txt
+
+# Added by repo hygiene pass
+.env
+.env.local
+node_modules/
