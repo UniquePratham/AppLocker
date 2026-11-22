@@ -1,16 +1,25 @@
-# AppLocker — Modern Windows Application Access Control
+# Aegis
 
-**v2.0.0** · Windows 10 / 11 · [MIT License](LICENSE.md)
+**v2.1.0** · Windows 10 / 11 · [MIT License](LICENSE.md)
 
-AppLocker password-protects the applications you choose. When a locked app is
+Aegis password-protects the applications you choose. When a locked app is
 launched it is closed immediately and a lock screen appears; the app only runs
 again when the correct password is entered (or a temporary unlock expires).
 
-It is a full re-design of the original C++/Qt AppLocker into a modern,
-dependency-light Windows application built with **Python + tkinter** and
-packaged as a single portable `AppLocker.exe`.
+Built with **Python + CustomTkinter** and packaged as a single portable
+`Aegis.exe`.
 
-> **Scope disclaimer.** AppLocker is a *user-space* utility for privacy and
+## Download
+
+**[Latest release](https://github.com/UniquePratham/AppLocker/releases/latest)**
+
+| File | What it is |
+|---|---|
+| `AegisSetup-2.1.0.exe` | Per-user installer, no admin rights needed |
+| `Aegis.exe` | Portable single-file build |
+| `Aegis.exe.sha256` | Checksum |
+
+> **Scope disclaimer.** Aegis is a *user-space* utility for privacy and
 > light parental control on a shared or personal computer. It is **not** a
 > substitute for account isolation, OS-level security, or enterprise
 > application control. See [Security model](#security-model).
@@ -50,14 +59,14 @@ packaged as a single portable `AppLocker.exe`.
 
 ## Getting started
 
-1. Download the latest `AppLocker.exe` and its `AppLocker.exe.sha256`
+1. Download the latest `Aegis.exe` and its `Aegis.exe.sha256`
    checksum from **Releases**, or build it yourself (below).
 2. Run the app — a 6-step **setup wizard** walks you through:
    create master password → write down your **recovery key** → choose
    run-at-login → optionally pick your first protected app.
 3. From the **Applications** page, add apps (browse, auto-discover from
    installed software, or pick a running process) and set a policy.
-4. Keep AppLocker in the **system tray**. Closing the window hides to tray;
+4. Keep Aegis in the **system tray**. Closing the window hides to tray;
    protection only stops when you choose **Exit** (and confirm knowing
    protection is disabled).
 
@@ -76,13 +85,13 @@ python app.py
 
 # One-file, windowed EXE + SHA-256 checksum:
 .\build.ps1
-# → dist\AppLocker.exe  and  release\AppLocker.exe(.sha256)
+# → dist\Aegis.exe  and  release\Aegis.exe(.sha256)
 ```
 
 ### Install (portable, no admin)
 
 ```powershell
-# installs to %LOCALAPPDATA%\Programs\AppLocker + uninstall entry:
+# installs to %LOCALAPPDATA%\Programs\Aegis + uninstall entry:
 .\install.ps1 -Startup
 
 # remove installed copy + uninstall entry:
@@ -103,7 +112,7 @@ block routing).
 ## Architecture
 
 ```
-applocker/
+Aegis/
   core/        crypto (scrypt verifier, DPAPI+Fernet), security services
                (AuthStore, brute-force guard, recovery keys), policy engine,
                process monitor, app discovery, AppController (single owner
@@ -134,13 +143,13 @@ model and rationale for every security decision.
 - **Brute-force guard**: 5 failed attempts → lockout with configurable
   cooldown, logged as audit events.
 - **Honest boundary**: any per-user, user-space tool can be defeated by
-  admin rights, Safe Mode, or booting another OS. AppLocker detects and logs
+  admin rights, Safe Mode, or booting another OS. Aegis detects and logs
   tampering where it can, but does not pretend to be a kernel/anti-cheat
   product.
 
 ### Known limitations
 
-- Requires the AppLocker process to be running for enforcement (see tray).
+- Requires the Aegis process to be running for enforcement (see tray).
 - Renamed executables or launchers that spawn a differently-named child may
   evade path-based matching.
 - No kernel-mode enforcement; no protection in Safe Mode / by administrators.
@@ -153,12 +162,12 @@ model and rationale for every security decision.
   design (low CPU). Allow up to ~2 s.
 - **Forgot the master password** — use your recovery key, or (if lost) reset
   via **Settings → Security → Reset / Recovery** after the recovery-key check
-  where possible. Otherwise remove `%LOCALAPPDATA%\AppLocker\Data\secrets.bin`
+  where possible. Otherwise remove `%LOCALAPPDATA%\Aegis\Data\secrets.bin`
   to start fresh (this also removes per-app vault entries).
-- **Logs** live in `%LOCALAPPDATA%\AppLocker\Data\logs` (rotated, redacted).
+- **Logs** live in `%LOCALAPPDATA%\Aegis\Data\logs` (rotated, redacted).
 
 ## License & credits
 
-MIT — see [LICENSE.md](LICENSE.md). Original AppLocker by Hachiki © 2025;
+MIT — see [LICENSE.md](LICENSE.md). Original Aegis by Hachiki © 2025;
 modern v2 re-design and implementation by Pratham. App icons generated with
 Pillow; icons for installed apps are extracted from the executables themselves.
