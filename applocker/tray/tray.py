@@ -102,13 +102,13 @@ class TrayController:
         if cb:
             cb()
 
-    def pause_submenu(self) -> list:
+    def pause_submenu(self) -> pystray.Menu:
         items = []
         for label, minutes in [("5 minutes", 5), ("15 minutes", 15),
                                ("30 minutes", 30), ("1 hour", 60)]:
             items.append(pystray.MenuItem(label, self._on_pause(minutes)))
         items.append(pystray.MenuItem("Until manually resumed", self._on_pause_manual))
-        return items
+        return pystray.Menu(*items)
 
     def build_menu(self) -> pystray.Menu:
         status = self.controller.protection_status()
@@ -116,7 +116,7 @@ class TrayController:
         if status == "active":
             status_item = [
                 pystray.MenuItem("● Protection Active", None, enabled=False),
-                pystray.MenuItem("Pause protection…", pystray.Menu(self.pause_submenu())),
+                pystray.MenuItem("Pause protection…", self.pause_submenu()),
             ]
         else:
             status_item = [
@@ -145,7 +145,7 @@ class TrayController:
     def run(self) -> None:
         image = Image.open(self.icon_path).convert("RGBA") if self.icon_path and os.path.exists(self.icon_path) \
             else self._default_icon()
-        self.icon = pystray.Icon("AppLocker", image, APP_DISPLAY_NAME, self.build_menu())
+        self.icon = pystray.Icon("Aegis", image, APP_DISPLAY_NAME, self.build_menu())
         self.icon.run()
 
     @staticmethod

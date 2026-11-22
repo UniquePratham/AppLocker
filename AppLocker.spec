@@ -12,6 +12,10 @@ datas = [
     (os.path.join("applocker", "assets"), "assets"),
 ]
 
+# CustomTkinter ships theme JSON and fonts as package data; without them the
+# frozen build cannot construct a single widget.
+datas += collect_data_files("customtkinter")
+
 hiddenimports = (
     collect_submodules("pystray")
     + collect_submodules("win32timezone")
@@ -40,7 +44,7 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name="AppLocker",
+    name="Aegis",
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -53,5 +57,5 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon=os.path.join("applocker", "assets", "applocker.ico"),
+    icon=os.path.join("applocker", "assets", "aegis.ico"),
 )

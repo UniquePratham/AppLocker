@@ -1,17 +1,17 @@
-; AppLocker — Inno Setup 6 installer script.
+; Aegis — Inno Setup 6 installer script.
 ;
-; Installs the single-file AppLocker.exe per-user (no administrator rights)
-; into %LOCALAPPDATA%\Programs\AppLocker, adds Start Menu shortcuts and an
+; Installs the single-file Aegis.exe per-user (no administrator rights)
+; into %LOCALAPPDATA%\Programs\Aegis, adds Start Menu shortcuts and an
 ; uninstall entry. Protected-app policies and the encrypted master password
-; live in %LOCALAPPDATA%\AppLocker and are intentionally left untouched on
+; live in %LOCALAPPDATA%\Aegis and are intentionally left untouched on
 ; uninstall.
 ;
 ; Build:  installer\build_installer.ps1
-; or:     ISCC.exe /DMyAppVersion=2.0.0 installer\AppLocker.iss
+; or:     ISCC.exe /DMyAppVersion=2.1.0 installer\Aegis.iss
 
-#define MyAppName "AppLocker"
+#define MyAppName "Aegis"
 #ifndef MyAppVersion
-#define MyAppVersion "2.0.0"
+#define MyAppVersion "2.1.0"
 #endif
 
 ; ---------------------------------------------------------------------------
@@ -20,14 +20,16 @@ AppId={{4D8A2F9E-6B2C-4A11-9C5D-3F2E9A8B7C64}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 AppVerName={#MyAppName} {#MyAppVersion}
-AppPublisher=AppLocker Contributors
+AppPublisher=Pratham Agarwal
+AppPublisherURL=https://github.com/UniquePratham/AppLocker
+AppSupportURL=https://github.com/UniquePratham/AppLocker/issues
 DefaultDirName={localappdata}\Programs\{#MyAppName}
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
 OutputDir=..\release
 OutputBaseFilename={#MyAppName}Setup-{#MyAppVersion}
-SetupIconFile=..\applocker\assets\applocker.ico
-UninstallDisplayIcon={app}\AppLocker.exe
+SetupIconFile=..\applocker\assets\aegis.ico
+UninstallDisplayIcon={app}\Aegis.exe
 UninstallDisplayName={#MyAppName}
 WizardStyle=modern
 PrivilegesRequired=lowest
@@ -37,6 +39,9 @@ Compression=lzma2
 SolidCompression=yes
 VersionInfoVersion={#MyAppVersion}
 VersionInfoDescription={#MyAppName} installer
+VersionInfoProductName={#MyAppName}
+VersionInfoCompany=Pratham Agarwal
+VersionInfoCopyright=Copyright (c) 2026 Pratham Agarwal
 RestartIfNeededByRun=no
 
 ; ---------------------------------------------------------------------------
@@ -46,18 +51,18 @@ Name: "startup"; Description: "Run {#MyAppName} when Windows sign&s in"; GroupDe
 
 ; ---------------------------------------------------------------------------
 [Files]
-Source: "..\release\AppLocker.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\release\Aegis.exe"; DestDir: "{app}"; Flags: ignoreversion
 
 ; ---------------------------------------------------------------------------
 [Icons]
-Name: "{userprograms}\{#MyAppName}"; Filename: "{app}\AppLocker.exe"
-Name: "{userdesktop}\{#MyAppName}"; Filename: "{app}\AppLocker.exe"; Tasks: desktopicon
+Name: "{userprograms}\{#MyAppName}"; Filename: "{app}\Aegis.exe"; IconFilename: "{app}\Aegis.exe"
+Name: "{userdesktop}\{#MyAppName}"; Filename: "{app}\Aegis.exe"; IconFilename: "{app}\Aegis.exe"; Tasks: desktopicon
 
 ; ---------------------------------------------------------------------------
 [Registry]
 Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; \
     ValueType: string; ValueName: "{#MyAppName}"; \
-    ValueData: """{app}\AppLocker.exe"""; Flags: uninsdeletevalue; Tasks: startup
+    ValueData: """{app}\Aegis.exe"""; Flags: uninsdeletevalue; Tasks: startup
 
 ; ---------------------------------------------------------------------------
 [UninstallDelete]
@@ -66,4 +71,4 @@ Type: dirifempty; Name: "{localappdata}\Programs"
 
 ; ---------------------------------------------------------------------------
 [Run]
-Filename: "{app}\AppLocker.exe"; Description: "Launch {#MyAppName} now"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\Aegis.exe"; Description: "Launch {#MyAppName} now"; Flags: nowait postinstall skipifsilent
