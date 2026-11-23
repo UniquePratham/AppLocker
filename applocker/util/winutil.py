@@ -30,7 +30,7 @@ if _HAS_WIN:
 
 
 APP_RUN_KEY = r"Software\Microsoft\Windows\CurrentVersion\Run"
-STARTUP_VALUE_NAME = "AppLocker"
+STARTUP_VALUE_NAME = "Aegis"
 
 _ICON_SIZES = [16, 24, 32, 48, 64, 128, 256]
 

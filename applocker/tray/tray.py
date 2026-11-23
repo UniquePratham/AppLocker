@@ -2,7 +2,7 @@
 
 The tray is a first-class surface:
 
-* Open AppLocker          → show dashboard (requires master if locked)
+* Open Aegis             → show dashboard (requires master if locked)
 * Protected Apps          → opens the Applications page
 * Pause Protection        → submenu of durations (auth-gated)
 * Quick Lock              → reassert all policies immediately
@@ -124,14 +124,14 @@ class TrayController:
                 pystray.MenuItem("Resume protection", self._on_resume),
             ]
         items = [
-            pystray.MenuItem("Open AppLocker", self._on_open, default=True),
+            pystray.MenuItem("Open Aegis", self._on_open, default=True),
             pystray.MenuItem("Protected Apps", self._on_protected_apps),
             pystray.MenuItem("Settings", self._on_settings),
             pystray.MenuItem("Quick Lock", self._on_quick_lock),
             pystray.Menu.SEPARATOR,
             *status_item,
             pystray.Menu.SEPARATOR,
-            pystray.MenuItem("Exit AppLocker", self._on_exit),
+            pystray.MenuItem("Exit Aegis", self._on_exit),
         ]
         return pystray.Menu(*items)
 

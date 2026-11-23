@@ -1,4 +1,4 @@
-"""Path utilities for AppLocker.
+"""Path utilities for Aegis.
 
 Centralizes where the application stores its data, config, logs and cache.
 Uses a single versioned application-data directory so upgrades and

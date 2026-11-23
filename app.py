@@ -1,4 +1,4 @@
-"""AppLocker application bootstrap.
+"""Aegis application bootstrap.
 
 Creates the core services (DB, secrets, monitor, controller), shows
 the first-run wizard or master-auth gate, then launches the main
@@ -99,12 +99,12 @@ def _run():
         import win32event
         import win32api
         import winerror
-        _m = win32event.CreateMutex(None, False, "AppLockerSingleInstanceMutex-v2")
+        _m = win32event.CreateMutex(None, False, "AegisSingleInstanceMutex-v2")
         if win32api.GetLastError() == winerror.ERROR_ALREADY_EXISTS:
             # Use a temporary hidden root for the messagebox.
             _r = ctk.CTk()
             _r.withdraw()
-            messagebox.showerror("AppLocker", "AppLocker is already running.", parent=_r)
+            messagebox.showerror("Aegis", "Aegis is already running.", parent=_r)
             _r.destroy()
             return
     except Exception:  # noqa: BLE001
@@ -325,8 +325,8 @@ def _run():
 
     def _tray_exit_confirm():
         def _ask():
-            if not messagebox.askyesno("Exit AppLocker",
-                                       "Protection will stop if AppLocker exits.\n\nExit anyway?",
+            if not messagebox.askyesno("Exit Aegis",
+                                       "Protection will stop if Aegis exits.\n\nExit anyway?",
                                        parent=root):
                 return
             from applocker.ui.lockscreen import MasterAuthDialog

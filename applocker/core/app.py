@@ -116,7 +116,7 @@ class AppController:
         """First-run: create master password and generate a recovery key."""
         rec_key = generate_recovery_key()
         self.secrets.set_master(password, recovery_key=rec_key)
-        self.db.add_event("setup", "AppLocker initialized with master password")
+        self.db.add_event("setup", "Aegis initialized with master password")
         self._notify()
         return rec_key
 

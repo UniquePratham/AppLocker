@@ -1,51 +1,47 @@
-"""UI icon loading helpers.
+"""Icon loading for the Aegis UI.
 
-Loads PNGs (brand icons, extracted app icons) into tk PhotoImages without
-leaking handles: small size pool, replaced on demand. Falls back to a
-generated app-glyph when no real icon is available.
+Returns ``CTkImage`` objects so CustomTkinter can scale them for HighDPI
+displays. Falls back to a generated brand glyph when no real icon exists.
 """
 
 from __future__ import annotations
 
 import os
-import tkinter as tk
 from typing import Optional
 
-from PIL import Image, ImageDraw, ImageTk
+import customtkinter as ctk
+from PIL import Image
+
 from applocker.util.brand import render_icon
 
 
-def _new_photo(path: str, size: int) -> Optional[ImageTk.PhotoImage]:
+def _load(path: str, size: int) -> Optional[Image.Image]:
     try:
-        im = Image.open(path).convert("RGBA").resize((size, size), Image.LANCZOS)
-        return ImageTk.PhotoImage(im)
+        return Image.open(path).convert("RGBA").resize((size, size), Image.LANCZOS)
     except Exception:  # noqa: BLE001
         return None
 
 
-def fallback_app_glyph(size: int = 40) -> Image.Image:
-    """A neutral, rounded app-tile glyph used when no real icon exists."""
-    img = render_icon(size)
-    return img
-
-
 class IconCache:
-    """Caches PhotoImages per (path,size) to keep references alive."""
+    """Caches ``CTkImage`` objects per (path, size)."""
 
-    def __init__(self, root: tk.Misc):
+    def __init__(self, root=None):
         self.root = root
-        self._cache: dict[tuple, ImageTk.PhotoImage] = {}
+        self._cache: dict[tuple, ctk.CTkImage] = {}
 
-    def get(self, path: str, size: int = 40, fallback: bool = True) -> Optional[ImageTk.PhotoImage]:
+    def get(self, path: str, size: int = 40, fallback: bool = True) -> Optional[ctk.CTkImage]:
         key = (path or "", size)
         if key in self._cache:
             return self._cache[key]
-        photo = None
+
+        image = None
         if path and os.path.isfile(path):
-            photo = _new_photo(path, size)
-        if photo is None and fallback:
-            im = fallback_app_glyph(size)
-            photo = ImageTk.PhotoImage(im)
-        if photo:
-            self._cache[key] = photo
-        return photo
+            image = _load(path, size)
+        if image is None and fallback:
+            image = render_icon(size)
+        if image is None:
+            return None
+
+        ctk_image = ctk.CTkImage(light_image=image, dark_image=image, size=(size, size))
+        self._cache[key] = ctk_image
+        return ctk_image

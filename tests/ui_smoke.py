@@ -1,24 +1,21 @@
-"""Smoke test: build the real Tk UI widget tree and render every page.
+"""Smoke test: build the real CustomTkinter UI and render every screen.
 
-Runs headless-friendly: creates the widgets, calls ``update_idletasks``
-once, swaps through all pages and destroys. Catches import/layout wiring
-bugs that unit tests cannot.
+Creates the widgets, pumps the event loop once, swaps through all pages and
+destroys. Catches import and layout wiring bugs that unit tests cannot.
 """
 
 import os
 import sys
 import tempfile
-import time
-import tkinter as tk
+
+import customtkinter as ctk
 
 from applocker.core.app import AppController
 from applocker.core.monitor import ProcessMonitor
 from applocker.core.security import AuthStore
 from applocker.data.database import AppDatabase
 from applocker.ui.main_window import MainWindow
-from applocker.ui.theme import apply_theme
-
-FAST = "--fast" in sys.argv
+from applocker.ui.tokens import palette
 
 
 def _make_controller():
@@ -39,37 +36,38 @@ def _make_controller():
 
 def main():
     ctl = _make_controller()
-    root = tk.Tk()
-    root.withdraw()
-    pal = apply_theme(root, "dark", {})
+
+    ctk.set_appearance_mode("dark")
+    root = ctk.CTk()
+    root.geometry("1x1+0+0")
+    root.deiconify()
+    root.update()
+
+    pal = palette("dark")
     win = MainWindow(root, ctl)
     win.toast("Hello", "info")
 
-    pages = ["home", "applications", "groups", "activity", "settings", "about"]
-    for p in pages:
-        win.show_page(p)
+    for page in ["home", "applications", "groups", "activity", "settings", "about"]:
+        win.show_page(page)
         root.update_idletasks()
-        # Force geometry so widget layout errors surface parse-time.
-        try:
-            win._content.update()
-        except tk.TclError:
-            pass
-        print(f"page ok: {p}")
+        print(f"page ok: {page}")
 
-    # Exercise dialogs / wizard non-modally (render only).
     from applocker.ui.setup_wizard import SetupWizard
+
     wizard = SetupWizard(root, ctl, pal)
     root.update_idletasks()
     wizard.win.destroy()
     print("setup wizard ok")
 
-    from applocker.ui.dialogs import MasterAuthDialog
+    from applocker.ui.lockscreen import MasterAuthDialog
+
     auth = MasterAuthDialog(root, ctl, pal)
     root.update_idletasks()
     auth.win.destroy()
     print("auth dialog ok")
 
     from applocker.ui.lockscreen import LockScreen
+
     app = ctl.db.list_apps()[0]
     ls = LockScreen(root, ctl, pal, app)
     root.update_idletasks()

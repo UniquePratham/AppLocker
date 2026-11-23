@@ -1,4 +1,4 @@
-"""Structured logging for AppLocker.
+"""Structured logging for Aegis.
 
 Design rules:
 * Never log passwords, recovery keys or any authentication secret.
@@ -69,7 +69,7 @@ def snapshot(logger: logging.Logger | None = None) -> str:
     """Return accumulated diagnostics as a single text blob for export."""
     logger = logger or get_logger()
     lines = []
-    lines.append(f"AppLocker diagnostics snapshot — {datetime.now().isoformat()}")
+    lines.append(f"Aegis diagnostics snapshot — {datetime.now().isoformat()}")
     for suffix in ["", ".1", ".2"]:
         path = os.path.join(get_log_dir(), f"applocker-v{_SCHEMA_VERSION}.log{suffix}")
         if os.path.exists(path):

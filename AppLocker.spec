@@ -1,5 +1,5 @@
 # -*- mode: python ; coding: utf-8 -*-
-"""PyInstaller spec for AppLocker (one-file, windowed EXE)."""
+"""PyInstaller spec for Aegis (one-file, windowed EXE)."""
 
 import os
 import sys

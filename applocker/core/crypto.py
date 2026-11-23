@@ -1,4 +1,4 @@
-"""Cryptographic core for AppLocker.
+"""Cryptographic core for Aegis.
 
 Goal: no plaintext passwords, no custom crypto, no secrets in logs.
 
@@ -47,7 +47,7 @@ _HASH_PREFIX = "scrypt$v1$"
 # Domain-separation for the verifier hash vs the encryption key.
 _VERIFIER_SALT_TAG = b"applocker:verifier"
 
-_DPAPI_APP_DESC = "AppLocker secrets v1"
+_DPAPI_APP_DESC = "Aegis secrets v1"
 _DPAPI_KEY_MARKER = b"APPLOCKER_KEY1:"
 
 
